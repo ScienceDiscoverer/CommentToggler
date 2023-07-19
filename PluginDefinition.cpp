@@ -43,6 +43,7 @@ struct UserLang
 	char bce[MAX_COMMENT_TAG_SIZE];
 };
 
+
 ui64 ulangs_s;
 UserLang *user_langs;
 
@@ -138,7 +139,6 @@ Lang langs[] = {
 };
 
 
-
 const TCHAR sectionName[] = TEXT("Insert Extension");
 const TCHAR keyName[] = TEXT("doCloseTag");
 const TCHAR configFileName[] = TEXT("pluginDemo.ini");
@@ -150,8 +150,6 @@ TCHAR iniFilePath[MAX_PATH];
 bool doCloseTag = false;
 
 HWND scintilla;
-
-
 
 
 const char *line_comm;
@@ -189,6 +187,7 @@ ui64 fnd1stNonSp(ui64 line, ui64 *h_sp);
 bool isComment(ui64 pos);
 bool isLineBeg(ui64 pos);
 bool isLineEnd(ui64 pos);
+bool isPosBegLine(ui64 pos, ui64 line);									   
 bool isBlockComm(ui64 pos, ui64 mode);
 void insertTabs(ui64 amount, ui64 pos);
 bool fndInSpaceSepArr(const char *fnd, const char *arr);
@@ -461,7 +460,7 @@ i64 togMultiSelLineComm(ui64 sel_s, ui64 sel_e, ui64 sel_i)
 	{
 		++line0;
 	}
-	if(fnd1stNonSp(line1) == NPOS)
+	if(isPosBegLine(sel_e, line1))
 	{
 		--line1;
 	}
@@ -1141,13 +1140,14 @@ bool isLineEnd(ui64 pos)
 {
 	ui64 line = m2scintilla(SCI_LINEFROMPOSITION, pos);
 	ui64 line_end = m2scintilla(SCI_GETLINEENDPOSITION, line);
+	ui64 line_beg = m2scintilla(SCI_POSITIONFROMLINE, line);													 
 
 	if(line_end == (ui64)m2scintilla(SCI_GETTEXTLENGTH))
 	{
 		return true;
 	}
 
-	if(pos == line_end) // Position is in the end of the line
+	if(pos == line_end || pos == line_beg) // Position is in the end of the line
 	{
 		return true;
 	}
@@ -1176,6 +1176,11 @@ bool isLineEnd(ui64 pos)
 
 	VirtualFree(seg_e, 0, MEM_RELEASE);
 	return true;
+}
+
+bool isPosBegLine(ui64 pos, ui64 line)
+{
+	return pos == (ui64)m2scintilla(SCI_POSITIONFROMLINE, line);
 }
 
 bool isBlockComm(ui64 pos, ui64 mode)
