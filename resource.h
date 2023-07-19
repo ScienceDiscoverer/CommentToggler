@@ -1,0 +1,3 @@
+#define IDI_COMMENT_ICON		100
+#define IDI_COMMENT_DM_ICON		101
+#define IDR_COMMENT_BMP			102
