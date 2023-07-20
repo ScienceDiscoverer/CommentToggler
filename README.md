@@ -4,7 +4,7 @@ This is a unified solution to any automated source code commenting problems you 
 Comment Toggler uses only a **single button** (command) to accomplish all the range of commenting you might need. It automatically determines what type of comment to make or to remove.
 
 Plug-in features:
-* Does not insert space in front of the comment (this can lead to confusion between commented-out code and actual manual comments). *Exception: REM batch*
+* Does not insert space in front of the comments (this can lead to confusion between commented-out code and actual manual comments). *Exception: REM batch*
 * Supports all the built-in languages and even user defined languages*
 * Can do simple single line comments without selection:
 <img src="readme/single_line.gif">
